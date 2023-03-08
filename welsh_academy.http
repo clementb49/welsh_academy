@@ -1,0 +1,149 @@
+###
+# @name createInvalidUser
+POST http://localhost:8000/api/v1/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "first_name": "toto",
+    "last_name": "tata",
+    "email": "toto.tata@welsh.fr",
+}
+
+###
+# @name createValidUser
+POST http://localhost:8000/api/v1/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "first_name": "toto",
+    "last_name": "tata",
+    "email": "toto.tata@welsh.fr",
+    "password": "tototata5"
+}
+
+###
+# @name loginValidUser
+POST http://localhost:8000/api/v1/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "toto.tata@welsh.fr",
+    "password": "tototata5"
+}
+
+###
+# @name getCurrentUser
+GET http://localhost:8000/api/v1/users/me HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+###
+# @name getUserById
+# @prompt userId The user id to get
+GET http://localhost:8000/api/v1/users/{{ userId }} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+###
+# @name createIngredient
+# @prompt ingredientName the name of ingredient to insert
+# @prompt ingredientType the type of ingredient to insert
+
+POST http://localhost:8000/api/v1/ingredients HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+{
+    "name": "{{ ingredientName }}",
+    "type": "{{ ingredientType }}"
+}
+
+###
+# @name getAllIngredientsWithNoPage
+GET http://localhost:8000/api/v1/ingredients HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+###
+# @name getAllIngredientsWithPage
+# @prompt pageSize size of the page
+# @prompt pageNumber number of the page
+GET http://localhost:8000/api/v1/ingredients?page_size={{ pageSize }}&page_number={{ pageNumber }} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+###
+# @name getIngredientById
+# @prompt ingredientId The ingredient id to get
+GET http://localhost:8000/api/v1/ingredients/{{ ingredientId }} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+###
+# @name deleteIngredientById
+# @prompt ingredientId The ingredient id to remove
+DELETE http://localhost:8000/api/v1/ingredients/{{ ingredientId }} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+###
+# @name createValidRecipe 
+POST  http://localhost:8000/api/v1/recipes
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+{
+    "title": "test2",
+    "description": "toto tata tutu",
+    "difficulty": 3,
+    "ingredients_id": [1, 2, 3, 4, 5]
+}
+
+###
+# @name getAllRecipe 
+GET  http://localhost:8000/api/v1/recipes
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+###
+# @name getRecipeById 
+# @prompt recipeId the Id of the recipe to get 
+GET  http://localhost:8000/api/v1/recipes/{{ recipeId }}
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+
+###
+# @name deleteRecipeById 
+# @prompt recipeId the Id of the recipe to get 
+DELETE http://localhost:8000/api/v1/recipes/{{ recipeId }}
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+
+###
+# @name addFavoriteRecipe
+# @prompt recipeId the Id of the recipe to add to favorite
+PATCH http://localhost:8000/api/v1/recipes/{{ recipeId }}/favorite
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+###
+# @name deleteFavoriteRecipe
+# @prompt recipeId the Id of the recipe to delete from favorite
+DELETE http://localhost:8000/api/v1/recipes/{{ recipeId }}/favorite
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+
+
+###
+# @name getAllFavoriteRecipes
+GET http://localhost:8000/api/v1/recipes/favorites
+Content-Type: application/json
+Authorization: Bearer {{ loginValidUser.response.body.access_token }}
+

@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+# Ignore environment file specific to the developer environment
+.env
+# Ignore binary package
+welsh_academy

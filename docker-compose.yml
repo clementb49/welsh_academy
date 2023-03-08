@@ -1,0 +1,30 @@
+services:
+# postgresQL database section
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+
+      # welsh academy API section
+  api:
+    image: welsh_academy_api:latest
+    ports:
+      - "8000:8000"
+    build: .
+    depends_on:
+      - db
+    environment:
+      - WA_DBHOST
+      - WA_DBPORT
+      - WA_DBUSER
+      - WA_DBPASSWORD
+      - WA_DBNAME
+      - WA_MODE=prod
+      - WA_LOGLEVEL
+      - WA_JWTKEY
+volumes:
+  db-data: {}
